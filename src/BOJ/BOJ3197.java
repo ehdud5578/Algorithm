@@ -3,16 +3,14 @@ package BOJ;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BOJ3197 {
     static int r,c;
-    static String[][] lake;
-    static ArrayList<Point> swan;
-    static Queue<Point> ice,water,queue,nextqueue;
+    static char[][] lake;
+    static Queue<int[]> water,queue;
     static int[] dx,dy;
     static Point start,end;
     static boolean[][] visited;
@@ -23,78 +21,74 @@ public class BOJ3197 {
         c = Integer.parseInt(stz.nextToken());
         dx = new int[]{0,1,0,-1};
         dy = new int[]{1,0,-1,0};
-        lake = new String[r][c];
-        ice = new LinkedList<>();
-        swan = new ArrayList<>();
+        lake = new char[r][c];
         water = new LinkedList<>();
         visited = new boolean[r][c];
         queue = new LinkedList<>();
-        nextqueue = new LinkedList<>();
+        boolean check = false;
         for(int i = 0;i<r;i++){
-            String[] temp = br.readLine().split("");
+            char[] temp = br.readLine().toCharArray();
             for(int j = 0;j<c;j++){
                 lake[i][j] = temp[j];
-                if(temp[j].equals("L")){
-                    swan.add(new Point(j,i));
-                    lake[i][j] = ".";
-                }else if(temp[j].equals(".")){
-                    water.add(new Point(j,i));
+                if(temp[j] == 'L'){
+                    if(!check){
+                        start = new Point(j,i);
+                        check = true;
+                    }
+                    else
+                        end = new Point(j,i);
+                    lake[i][j] = '.';
+                }else if(temp[j] == '.'){
+                    water.add(new int[]{j,i});
                 }
             }
         }
-        start = swan.get(0);
-        end = swan.get(1);
-        queue.add(start);
+        queue.add(new int[]{start.x,start.y});
         visited[start.y][start.x] = true;
-        int result = countDays(0);
-        System.out.println(result);
-    }
-    public static int countDays(int day){
+        int result = 0;
         while (!isConnected()){
-            day ++;
+            result++;
             meltice();
         }
-        return day;
-
+        System.out.println(result);
     }
+
     public static void meltice(){
         int size = water.size();
         for(int i = 0;i<size;i++){
-            Point now = water.poll();
+            int[] now = water.poll();
             for(int j = 0;j<4;j++){
-                int ny = now.y + dy[j];
-                int nx = now.x + dx[j];
-                if(nx>=0&&nx<c&&ny>=0&&ny<r){
-                    if(lake[ny][nx].equals("X")){
-                        water.add(new Point(nx,ny));
-                        lake[ny][nx] = ".";
-                    }
+                int ny = now[1] + dy[j];
+                int nx = now[0] + dx[j];
+                if(nx>=0&&nx<c&&ny>=0&&ny<r && lake[ny][nx] == 'X'){
+                    water.add(new int[]{nx,ny});
+                    lake[ny][nx] = '.';
                 }
             }
         }
     }
 
     public static boolean isConnected(){
-        while (!nextqueue.isEmpty()){
-            queue.add(nextqueue.poll());
-        }
+        Queue<int[]> nextQueue = new LinkedList<>();
         while (!queue.isEmpty()){
-            Point now = queue.poll();
-            if(now.x==end.x && now.y ==end.y)
+            int[] now = queue.poll();
+            if(now[0]==end.x && now[1] ==end.y)
                 return true;
             for(int i = 0;i<4;i++){
-                int nx = now.x + dx[i];
-                int ny = now.y + dy[i];
+                int nx = now[0] + dx[i];
+                int ny = now[1] + dy[i];
                 if(nx>=0&&nx<c&&ny>=0&&ny<r){
-                    if(!visited[ny][nx]&&!lake[ny][nx].equals("X")) { // 방문하지 않았고 물일때 계속 탐색
-                        queue.add(new Point(nx, ny));
+                    if(!visited[ny][nx]&& lake[ny][nx] == '.') { // 방문하지 않았고 물일때 계속 탐색
+                        queue.add(new int[]{nx,ny});
                         visited[ny][nx] = true;
                     } else{
-                        nextqueue.add(new Point(nx,ny)); // 얼음일 경우 다음턴부터 탐색 함.
+                        nextQueue.add(new int[]{nx,ny}); // 얼음일 경우 다음턴부터 탐색 함.
+                        visited[ny][nx] = true;
                     }
                 }
             }
         }
+        queue = nextQueue;
         return false;
     }
 }
@@ -104,5 +98,5 @@ public class BOJ3197 {
 * 시간초과 5%
 *
 * 메모리 초과...
-*
+* 다른사람들 블로그와 비교해 봐도 왜 틀렸는지 모르겠다
 * */
