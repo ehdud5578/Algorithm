@@ -58,7 +58,7 @@ public class BOJ3197 {
         for(int i = 0;i<size;i++){
             int[] now = water.poll();
             for(int j = 0;j<4;j++){
-                int ny = now[1] + dy[j];
+                int ny = now[1] + dy[j]; // NullPointerException 경고.
                 int nx = now[0] + dx[j];
                 if(nx>=0&&nx<c&&ny>=0&&ny<r && lake[ny][nx] == 'X'){
                     water.add(new int[]{nx,ny});
