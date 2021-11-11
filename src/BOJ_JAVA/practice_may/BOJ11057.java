@@ -1,4 +1,4 @@
-package BOJ.practice_may;
+package BOJ_JAVA.practice_may;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

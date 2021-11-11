@@ -1,4 +1,4 @@
-package BOJ.practice_5th;
+package BOJ_JAVA.practice_5th;
 
 import java.io.BufferedReader;
 import java.io.IOException;

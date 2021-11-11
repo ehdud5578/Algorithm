@@ -1,4 +1,4 @@
-package BOJ.practice_3th;
+package BOJ_JAVA.practice_3th;
 
 import java.io.*;
 import java.util.*;

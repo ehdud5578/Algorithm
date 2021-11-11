@@ -1,8 +1,7 @@
-package BOJ.practice_april;
+package BOJ_JAVA.practice_april;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ17825 {

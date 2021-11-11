@@ -1,7 +1,6 @@
-package BOJ.practice_april;
+package BOJ_JAVA.practice_april;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ5373 {

@@ -1,4 +1,4 @@
-package BOJ.graph_bfs;
+package BOJ_JAVA.graph_bfs;
 
 import java.io.*;
 import java.util.ArrayList;
